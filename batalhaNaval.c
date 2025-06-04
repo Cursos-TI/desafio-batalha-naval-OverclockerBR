@@ -1,161 +1,189 @@
 #include <stdio.h>
 
-// Definindo o novo tamanho do tabuleiro para o Nível Aventureiro
-#define LINHAS 10
-#define COLUNAS 10
+// Definindo o tamanho do tabuleiro principal (mantendo 10x10 do Aventureiro)
+#define TAB_LINHAS 10
+#define TAB_COLUNAS 10
+
+// Definindo o tamanho das matrizes de habilidade (para demonstração dos padrões)
+#define HABILIDADE_TAMANHO 5 // As habilidades serão demonstradas em uma matriz 5x5
+
+// Função para exibir uma matriz genérica
+void exibirMatriz(int linhas, int colunas, int matriz[linhas][colunas]) {
+    for (int i = 0; i < linhas; i++) {
+        for (int j = 0; j < colunas; j++) {
+            printf("%d ", matriz[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n"); // Linha em branco para separação
+}
 
 int main() {
-    // Declara a matriz bidimensional para representar o tabuleiro
-    // 0 = água (posição sem navio)
-    // 3 = parte de um navio (posição ocupada)
-    int tabuleiro[LINHAS][COLUNAS];
+    // --- Parte do Nível Aventureiro (Mantida) ---
 
-    // Inicializa o tabuleiro com água (0)
-    printf("--- NÍVEL AVENTUREIRO: Batalha Naval ---\n");
-    printf("Inicializando o tabuleiro 10x10 com água (0)...\n");
-    for (int i = 0; i < LINHAS; i++) {
-        for (int j = 0; j < COLUNAS; j++) {
+    int tabuleiro[TAB_LINHAS][TAB_COLUNAS];
+
+    printf("--- NÍVEL MESTRE: Batalha Naval com Habilidades ---\n");
+    printf("Inicializando o tabuleiro principal 10x10 com água (0)...\n");
+    for (int i = 0; i < TAB_LINHAS; i++) {
+        for (int j = 0; j < TAB_COLUNAS; j++) {
             tabuleiro[i][j] = 0;
         }
     }
-    printf("Tabuleiro inicializado com sucesso!\n\n");
+    printf("Tabuleiro principal inicializado com sucesso!\n\n");
 
-    // --- Posicionamento dos Quatro Navios ---
+    // Posicionamento dos Quatro Navios (do Nível Aventureiro)
+    // Os navios serão marcados com '3' no tabuleiro principal
+    // (Não vou repetir as mensagens detalhadas de posicionamento aqui para focar nas habilidades)
 
     // Navio 1: Vertical (tamanho 4)
-    // Posição inicial: Linha 1, Coluna 0 (display: 2,A)
-    // Ocupará (1,0), (2,0), (3,0), (4,0)
-    int navio1_linha_inicial = 1;
-    int navio1_coluna_inicial = 0;
-    int navio1_tamanho = 4; // Aumentado para 4
-
-    printf("Posicionando Navio 1 (Vertical - Tamanho %d):\n", navio1_tamanho);
+    int navio1_linha_inicial = 1; int navio1_coluna_inicial = 0; int navio1_tamanho = 4;
     for (int i = 0; i < navio1_tamanho; i++) {
-        int linha_matriz = navio1_linha_inicial + i;
-        int coluna_matriz = navio1_coluna_inicial;
-        
-        // Converte coordenadas da matriz para display
-        int linha_display = linha_matriz + 1;
-        char coluna_display = 'A' + coluna_matriz;
-
-        if (linha_matriz < LINHAS && coluna_matriz < COLUNAS) {
-            tabuleiro[linha_matriz][coluna_matriz] = 3; // Marca como parte do navio (valor 3)
-            printf("  Parte do Navio 1 em: (%d, %c) - (Interno: %d,%d)\n", linha_display, coluna_display, linha_matriz, coluna_matriz);
-        } else {
-            printf("  Erro: Tentativa de posicionar Navio 1 fora do tabuleiro em: (%d, %c)\n", linha_display, coluna_display);
-        }
+        if (navio1_linha_inicial + i < TAB_LINHAS && navio1_coluna_inicial < TAB_COLUNAS)
+            tabuleiro[navio1_linha_inicial + i][navio1_coluna_inicial] = 3;
     }
-    printf("\n");
 
     // Navio 2: Horizontal (tamanho 5)
-    // Posição inicial: Linha 0, Coluna 3 (display: 1,D)
-    // Ocupará (0,3), (0,4), (0,5), (0,6), (0,7)
-    int navio2_linha_inicial = 0;
-    int navio2_coluna_inicial = 3;
-    int navio2_tamanho = 5; // Aumentado para 5
-
-    printf("Posicionando Navio 2 (Horizontal - Tamanho %d):\n", navio2_tamanho);
+    int navio2_linha_inicial = 0; int navio2_coluna_inicial = 3; int navio2_tamanho = 5;
     for (int j = 0; j < navio2_tamanho; j++) {
-        int linha_matriz = navio2_linha_inicial;
-        int coluna_matriz = navio2_coluna_inicial + j;
-
-        // Converte coordenadas da matriz para display
-        int linha_display = linha_matriz + 1;
-        char coluna_display = 'A' + coluna_matriz;
-
-        if (linha_matriz < LINHAS && coluna_matriz < COLUNAS) {
-            tabuleiro[linha_matriz][coluna_matriz] = 3; // Marca como parte do navio (valor 3)
-            printf("  Parte do Navio 2 em: (%d, %c) - (Interno: %d,%d)\n", linha_display, coluna_display, linha_matriz, coluna_matriz);
-        } else {
-            printf("  Erro: Tentativa de posicionar Navio 2 fora do tabuleiro em: (%d, %c)\n", linha_display, coluna_display);
-        }
+        if (navio2_linha_inicial < TAB_LINHAS && navio2_coluna_inicial + j < TAB_COLUNAS)
+            tabuleiro[navio2_linha_inicial][navio2_coluna_inicial + j] = 3;
     }
-    printf("\n");
 
-    // Navio 3: Diagonal (Canto Superior Esquerdo para Baixo e Direita - tamanho 3)
-    // Posição inicial: Linha 2, Coluna 2 (display: 3,C)
-    // Ocupará (2,2), (3,3), (4,4)
-    int navio3_linha_inicial = 2;
-    int navio3_coluna_inicial = 2;
-    int navio3_tamanho = 3;
-
-    printf("Posicionando Navio 3 (Diagonal Baixo-Direita - Tamanho %d):\n", navio3_tamanho);
+    // Navio 3: Diagonal (Baixo-Direita - tamanho 3)
+    int navio3_linha_inicial = 2; int navio3_coluna_inicial = 2; int navio3_tamanho = 3;
     for (int k = 0; k < navio3_tamanho; k++) {
-        int linha_matriz = navio3_linha_inicial + k;
-        int coluna_matriz = navio3_coluna_inicial + k; // Tanto linha quanto coluna incrementam
-
-        // Converte coordenadas da matriz para display
-        int linha_display = linha_matriz + 1;
-        char coluna_display = 'A' + coluna_matriz;
-
-        if (linha_matriz < LINHAS && coluna_matriz < COLUNAS) {
-            tabuleiro[linha_matriz][coluna_matriz] = 3; // Marca como parte do navio (valor 3)
-            printf("  Parte do Navio 3 em: (%d, %c) - (Interno: %d,%d)\n", linha_display, coluna_display, linha_matriz, coluna_matriz);
-        } else {
-            printf("  Erro: Tentativa de posicionar Navio 3 fora do tabuleiro em: (%d, %c)\n", linha_display, coluna_display);
-        }
+        if (navio3_linha_inicial + k < TAB_LINHAS && navio3_coluna_inicial + k < TAB_COLUNAS)
+            tabuleiro[navio3_linha_inicial + k][navio3_coluna_inicial + k] = 3;
     }
-    printf("\n");
 
-    // Navio 4: Diagonal (Canto Superior Direito para Baixo e Esquerda - tamanho 4)
-    // Posição inicial: Linha 0, Coluna 9 (display: 1,J)
-    // Ocupará (0,9), (1,8), (2,7), (3,6)
-    int navio4_linha_inicial = 0;
-    int navio4_coluna_inicial = 9;
-    int navio4_tamanho = 4;
-
-    printf("Posicionando Navio 4 (Diagonal Baixo-Esquerda - Tamanho %d):\n", navio4_tamanho);
+    // Navio 4: Diagonal (Baixo-Esquerda - tamanho 4)
+    int navio4_linha_inicial = 0; int navio4_coluna_inicial = 9; int navio4_tamanho = 4;
     for (int l = 0; l < navio4_tamanho; l++) {
-        int linha_matriz = navio4_linha_inicial + l;  // Linha incrementa
-        int coluna_matriz = navio4_coluna_inicial - l; // Coluna decrementa
+        if (navio4_linha_inicial + l < TAB_LINHAS && navio4_coluna_inicial - l >= 0 && navio4_coluna_inicial - l < TAB_COLUNAS)
+            tabuleiro[navio4_linha_inicial + l][navio4_coluna_inicial - l] = 3;
+    }
 
-        // Converte coordenadas da matriz para display
-        int linha_display = linha_matriz + 1;
-        char coluna_display = 'A' + coluna_matriz;
+    // --- Novas Funcionalidades para Nível Mestre: Habilidades Especiais ---
 
-        if (linha_matriz < LINHAS && coluna_matriz >= 0 && linha_matriz < LINHAS && coluna_matriz < COLUNAS) { // Validação de limite inferior da coluna
-            tabuleiro[linha_matriz][coluna_matriz] = 3; // Marca como parte do navio (valor 3)
-            printf("  Parte do Navio 4 em: (%d, %c) - (Interno: %d,%d)\n", linha_display, coluna_display, linha_matriz, coluna_matriz);
-        } else {
-            printf("  Erro: Tentativa de posicionar Navio 4 fora do tabuleiro em: (%d, %c)\n", linha_display, coluna_display);
+    // 1. Habilidade em Cone (exemplo 5x5)
+    // Padrão:
+    // 0 0 1 0 0
+    // 0 1 1 1 0
+    // 1 1 1 1 1
+    int habilidade_cone[HABILIDADE_TAMANHO][HABILIDADE_TAMANHO];
+
+    // Inicializa a matriz da habilidade com 0s
+    for (int i = 0; i < HABILIDADE_TAMANHO; i++) {
+        for (int j = 0; j < HABILIDADE_TAMANHO; j++) {
+            habilidade_cone[i][j] = 0;
         }
     }
-    printf("\n");
 
+    // Preenche o padrão de Cone
+    // Centro do cone está em (0, HABILIDADE_TAMANHO / 2)
+    int centro_coluna = HABILIDADE_TAMANHO / 2;
+    for (int i = 0; i < HABILIDADE_TAMANHO; i++) { // Percorre as linhas
+        // A largura da base do cone aumenta a cada linha
+        // Calculamos o deslocamento a partir do centro para cada lado
+        int deslocamento = i; 
+        for (int j = 0; j < HABILIDADE_TAMANHO; j++) { // Percorre as colunas
+            if (j >= centro_coluna - deslocamento && j <= centro_coluna + deslocamento) {
+                habilidade_cone[i][j] = 1;
+            }
+        }
+    }
+    printf("--- Padrão de Habilidade: CONE ---\n");
+    exibirMatriz(HABILIDADE_TAMANHO, HABILIDADE_TAMANHO, habilidade_cone);
 
-    // --- Exibindo o Tabuleiro Completo com Letras e Números ---
-    printf("Visualização final do Tabuleiro (Nível Aventureiro):\n");
+    // 2. Habilidade em Octaedro (ou Diamante/Losango) (exemplo 5x5)
+    // Padrão:
+    // 0 0 1 0 0
+    // 0 1 1 1 0
+    // 0 0 1 0 0
+    int habilidade_octaedro[HABILIDADE_TAMANHO][HABILIDADE_TAMANHO];
 
-    // Imprime o cabeçalho das colunas (letras)
-    printf("     "); // Espaço para alinhar com os números das linhas (agora 2 dígitos)
-    for (int j = 0; j < COLUNAS; j++) {
+    // Inicializa a matriz da habilidade com 0s
+    for (int i = 0; i < HABILIDADE_TAMANHO; i++) {
+        for (int j = 0; j < HABILIDADE_TAMANHO; j++) {
+            habilidade_octaedro[i][j] = 0;
+        }
+    }
+
+    // Preenche o padrão de Octaedro
+    // Centro está em (HABILIDADE_TAMANHO / 2, HABILIDADE_TAMANHO / 2)
+    int centro_oct_linha = HABILIDADE_TAMANHO / 2;
+    int centro_oct_coluna = HABILIDADE_TAMANHO / 2;
+
+    for (int i = 0; i < HABILIDADE_TAMANHO; i++) {
+        for (int j = 0; j < HABILIDADE_TAMANHO; j++) {
+            // Distância de Manhattan ao centro: |i - centro_oct_linha| + |j - centro_oct_coluna|
+            // Para um octaedro 5x5 centrado em (2,2), os pontos afetados têm distância <= 2
+            int distancia_manhattan = (i > centro_oct_linha ? i - centro_oct_linha : centro_oct_linha - i) +
+                                      (j > centro_oct_coluna ? j - centro_oct_coluna : centro_oct_coluna - j);
+            
+            if (distancia_manhattan <= centro_oct_linha) { // Para um octaedro 5x5, o raio é 2
+                habilidade_octaedro[i][j] = 1;
+            }
+        }
+    }
+    printf("--- Padrão de Habilidade: OCTAEDRO ---\n");
+    exibirMatriz(HABILIDADE_TAMANHO, HABILIDADE_TAMANHO, habilidade_octaedro);
+
+    // 3. Habilidade em Cruz (exemplo 5x5)
+    // Padrão:
+    // 0 0 1 0 0
+    // 1 1 1 1 1
+    // 0 0 1 0 0
+    int habilidade_cruz[HABILIDADE_TAMANHO][HABILIDADE_TAMANHO];
+
+    // Inicializa a matriz da habilidade com 0s
+    for (int i = 0; i < HABILIDADE_TAMANHO; i++) {
+        for (int j = 0; j < HABILIDADE_TAMANHO; j++) {
+            habilidade_cruz[i][j] = 0;
+        }
+    }
+
+    // Preenche o padrão de Cruz
+    // Linha do meio e coluna do meio
+    int linha_do_meio = HABILIDADE_TAMANHO / 2;
+    int coluna_do_meio = HABILIDADE_TAMANHO / 2;
+
+    for (int i = 0; i < HABILIDADE_TAMANHO; i++) {
+        for (int j = 0; j < HABILIDADE_TAMANHO; j++) {
+            if (i == linha_do_meio || j == coluna_do_meio) { // Se estiver na linha do meio OU na coluna do meio
+                habilidade_cruz[i][j] = 1;
+            }
+        }
+    }
+    printf("--- Padrão de Habilidade: CRUZ ---\n");
+    exibirMatriz(HABILIDADE_TAMANHO, HABILIDADE_TAMANHO, habilidade_cruz);
+
+    // --- Exibição do Tabuleiro Principal (do Nível Aventureiro) ---
+    // (Ainda mostrando 0 para água e 3 para navios)
+    printf("Visualização final do Tabuleiro Principal (com Navios):\n");
+
+    printf("     "); 
+    for (int j = 0; j < TAB_COLUNAS; j++) {
         printf("%c ", 'A' + j);
     }
     printf("\n");
 
-    // Imprime uma linha divisória
     printf("   +-");
-    for (int j = 0; j < COLUNAS; j++) {
+    for (int j = 0; j < TAB_COLUNAS; j++) {
         printf("--");
     }
     printf("+\n");
 
-    // Imprime as linhas com os números e o conteúdo do tabuleiro
-    for (int i = 0; i < LINHAS; i++) {
-        printf("%2d | ", i + 1); // Números das linhas (1-baseado) e borda esquerda, com 2 espaços
-        for (int j = 0; j < COLUNAS; j++) {
-            // Se for água, mostra '~'
-            // Se for navio, mostra 'S'
-            if (tabuleiro[i][j] == 0) {
-                printf("0 ");
-            } else { // tabuleiro[i][j] == 3
-                printf("3 ");
-            }
+    for (int i = 0; i < TAB_LINHAS; i++) {
+        printf("%2d | ", i + 1); 
+        for (int j = 0; j < TAB_COLUNAS; j++) {
+            printf("%d ", tabuleiro[i][j]); 
         }
-        printf("|\n"); // Borda direita
+        printf("|\n"); 
     }
-    printf("   +-"); // Borda inferior
-    for (int j = 0; j < COLUNAS; j++) {
+    printf("   +-"); 
+    for (int j = 0; j < TAB_COLUNAS; j++) {
         printf("--");
     }
     printf("+\n");
